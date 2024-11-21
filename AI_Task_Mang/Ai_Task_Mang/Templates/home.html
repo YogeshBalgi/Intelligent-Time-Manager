@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Home</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem 2rem;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: white;
+            color: #007BFF;
+            border-color: #007BFF;
+        }
+
+        /* Main Content */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 80vh;
+            background-color: #e9f4ff;
+            padding: 2rem;
+        }
+
+        .hero-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #007BFF;
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h1>Task Manager</h1>
+        <div class="nav-links">
+            <a href="{% url 'login' %}">Log In</a> <!-- Opens login.html -->
+            <a href="{% url 'signup' %}">Sign Up</a> <!-- Opens sign.html -->
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h2>Welcome to Task Manager</h2>
+        <p>Manage your tasks effectively and stay productive. Log in to access your account or sign up to get started!</p>
+    </div>
+</body>
+</html>
+
+

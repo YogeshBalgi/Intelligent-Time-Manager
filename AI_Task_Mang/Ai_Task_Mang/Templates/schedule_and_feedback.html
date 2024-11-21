@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule & Feedback</title>
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Import Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #6366f1;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navigation bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .profile-section {
+            display: flex;
+            align-items: center;
+            position: relative;
+            gap: 10px;
+        }
+
+        .profile-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            background-image: url('https://via.placeholder.com/40'); /* Replace with the actual profile picture URL */
+            background-size: cover;
+            background-position: center;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 250px; /* Increased width of the dropdown */
+            background-color: rgb(236, 230, 230);
+            color: black;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+        }
+
+        .dropdown a:hover {
+            background-color: #d3d3d3;
+        }
+
+        /* Show dropdown on hover */
+        .profile-section:hover .dropdown {
+            display: block;
+        }
+
+        .schedule-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .task-card {
+            position: relative; /* Added for red dot positioning */
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .task-card.scratched {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .red-dot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px; /* Adjust as needed */
+            right: 10px; /* Adjust as needed */
+        }
+        .yellow-dot {
+            width: 10px;
+            height: 10px;
+            background-color: yellow;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px; /* Adjust as needed */
+            right: 10px; /* Adjust as needed */
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space ```html-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .task-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .priority-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-details {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .detail-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .detail-content {
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .feedback-section {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .feedback-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .feedback-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-select {
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            font-size: 1rem;
+            color: var(--text-primary);
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .checkbox-input {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 4px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .submit-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Progress indicators */
+        .progress-bar {
+            height: 4px;
+            background-color: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem }
+            .schedule-container {
+                padding: 1rem;
+            }
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: var(--card-background);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .feedback-submitted {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .feedback-submitted i {
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-submitted p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Optional: Add a subtle animation for the submitted state */
+        .feedback-submitted {
+            animation: fadeIn 0.3s ease-out;
+        }
+        .green-dot {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+}
+    </style>
+</head>
+<body>
+     <div class="navbar">
+        <div class="brand">Intelligent Time Manager</div>
+        <div class="profile-section">
+            <div class="profile-logo"></div>
+            <div class="user-name">{{ user.username }}</div>
+            
+            <div class="dropdown">
+                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url 'add_task' %}">Add Task</a>
+                <a href="{% url 'schedule' %}"">Schedule</a>
+                <a href="{% url 'task_prioritization' %}"">Energy Level</a>
+                <a href="{% url 'task_analytics' %}">Analytics</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="schedule-container">
+        <div class="page-header">
+            <h1>My Daily Schedule</h1>
+            <p>Organize your day efficiently with AI-powered task prioritization</p>
+        </div>
+
+        <div class="tasks-grid">
+            {% for task in daily_schedule %}
+    <div class="task-card" data-end-time="{{ task.end_time|date:"Y-m-d H:i:s" }}">
+        {% if task.end_time|date:"Y-m-d H:i:s" <= current_time|date:"Y-m-d H:i:s" %}
+            <div class="green-dot"></div>
+        {% elif task.start_time|date:"Y-m-d H:i:s" <= current_time|date:"Y-m-d H:i:s" %}
+            <div class="yellow-dot"></div>
+        {% endif %}
+        <div class="task-header">
+            <h2 class="task-title">{{ task.title }}</h2>
+            <span class="priority-badge">
+                <i class="fas fa-star"></i>
+                Priority: {{ task.predicted_priority|default:task.score|floatformat:2 }}
+            </span>
+        </div>
+
+                <div class="task-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">
+                            <i class="fas fa-align-left"></i>
+                        </span>
+                        <div class="detail-content">
+                            <div class="detail-label">Description</div>
+                            <div class="detail-value">{{ task.description }}</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-icon">
+                            <i class="fas fa-clock"></i>
+                        </span>
+                        <div class="detail-content">
+                            <div class="detail-label">Timeline</div>
+                            <div class="detail-value">
+                                {% if task.start_time %}
+                                    {{ task.start_time|date:"Y-m-d H:i" }} IST
+                                {% endif %}
+                                {% if task.end_time %}
+                                    to {{ task.end_time|date:"H:i" }} IST
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                        <div class="detail-content">
+                            <div class="detail-label">Importance & Urgency</div>
+                            <div class="detail-value">
+                                Importance: {{ task.importance }}/5
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ task.importance|floatformat:0 }}0%;"></div>
+                                </div>
+                                Urgency: {{ task.urgency }}/5
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ task.urgency|floatformat:0 }}0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-section">
+                    <h3 class="feedback-header">Task Feedback</h3>
+                    {% if not task.has_feedback %}
+                        <form method="POST" action="{% url 'submit_task_feedback' task.id %}" class="feedback-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="form-label" for="rating-{{ task.id }}">How effective was this task scheduling?</label>
+                                <select class="form-select" name="rating" id="rating-{{ task.id }}">
+                                    <option value="Effective">Effective</option>
+                                    <option value="Neutral">Neutral</option>
+                                    <option value="Ineffective">Ineffective</option>
+                                </select>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <input type="checkbox" name="completed_on_time" id="completed_on_time-{{ task.id }}" class="checkbox-input" value="true">
+                                <label class="form-label" for="completed_on_time-{{ task.id }}">Task completed on time</label>
+                            </div>
+
+                            <button type="submit" class="submit-button">
+                                <i class="fas fa-paper-plane"></i> Submit Feedback
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="feedback-submitted">
+                            <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 1.5rem; margin-bottom: 1rem;"></i>
+                            <p style="color: var(--text-secondary); text-align: center;">Feedback has been submitted for this task. Thank you!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-tasks"></i>
+                <p>You have no tasks scheduled for today. Take a break!</p>
+            </div>
+            {% endfor %}
+            {% if debug_info %}
+            <div class="debug-section" style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+                <h3>Debug Information</h3>
+                <p>Schedule Length: {{ debug_info.schedule_length }}</p>
+                <h4>Task Details:</h4>
+                <ul>
+                {% for task_detail in debug_info.tasks_details %}
+                    <li>{{ task_detail.title }} - Priority: {{ task_detail.priority }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const taskCards = document.querySelectorAll('.task-card');
+    const currentTime = new Date();
+
+    taskCards.forEach(card => {
+        const endTime = new Date(card.getAttribute('data-end-time'));
+
+        // Check if the task is in progress (started but not completed)
+        const startTime = new Date(card.getAttribute('data-start-time')); // Make sure you have data-start-time for this check
+        if (startTime <= currentTime && endTime > currentTime) {
+            const yellowDot = document.createElement('div');
+            yellowDot.classList.add('yellow-dot');
+            card.appendChild(yellowDot);
+        } else if (endTime < currentTime) {
+            const greenDot = document.createElement('div');
+            greenDot.classList.add('green-dot');
+            card.appendChild(greenDot);
+        }
+    });
+});
+    </script>
+</body>
+</html>

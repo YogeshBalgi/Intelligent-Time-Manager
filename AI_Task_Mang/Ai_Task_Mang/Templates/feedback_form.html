@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provide Feedback</title>
+</head>
+<body>
+    <h1>Provide Feedback on Your Task Completion</h1>
+    <form method="POST">
+    {% csrf_token %}
+    <label for="task">Select Task:</label>
+    <select name="task" id="task">
+        {% for task in tasks %}
+            <option value="{{ task.id }}">{{ task.title }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="rating">Rating:</label>
+    <select name="rating" id="rating">
+        <option value="Effective">Effective</option>
+        <option value="Neutral">Neutral</option>
+        <option value="Ineffective">Ineffective</option>
+    </select>
+
+    <label for="completed_on_time">Completed on Time:</label>
+    <select name="completed_on_time" id="completed_on_time">
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+    </select>
+
+    <button type="submit">Submit Feedback</button>
+</form>
+</body>
+</html>

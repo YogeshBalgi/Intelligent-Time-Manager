@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navigation bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            background-image: url('/mnt/data/Screenshot 2024-11-20 151154.png');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .form-container {
+            max-width: calc(400px + 1cm); 
+            margin: 20px auto;
+            padding-top: 10px;
+            padding-left: 45px;
+            padding-right: 65px;
+            background: white;
+            border-radius: 10px;
+            height: 850px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          
+        }
+
+        input, textarea, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+     /* Dropdown styles */
+     .dropdown {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        width: 250px; /* Increased width of the dropdown */
+        background-color: rgb(236, 230, 230);
+        color: black;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        z-index: 10;
+    }
+
+    .dropdown a {
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: black;
+        font-size: 14px;
+    }
+
+    .dropdown a:hover {
+        background-color: #d3d3d3;
+    }
+
+        /* Show dropdown on hover */
+        .profile-section:hover .dropdown {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="brand">Intelligent Time Manager</div>
+        <div class="profile-section">
+            <div class="profile-logo"></div>
+            <div>{{ user.username }}</div>
+           <div class="dropdown">
+                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url 'add_task' %}">Add Task</a>
+                <a href="{% url 'schedule' %}"">Schedule</a>
+                <a href="{% url 'task_prioritization' %}"">Energy Level</a>
+                <a href="{% url 'task_analytics' %}">Analytics</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h2>Task Scheduler</h2>
+        <form method="POST" action="/add-task/" id="task-form">
+            {% csrf_token %}
+            <label for="title">Task Title:</label>
+            <input type="text" id="title" name="title" required><br><br>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea><br><br>
+
+            <label for="due_date">Deadline:</label>
+            <input type="datetime-local" id="due_date" name="due_date" required><br><br>
+
+            <label for="estimated_time">Estimated Time (hours):</label>
+            <input type="number" id="estimated_time" name="estimated_time" step="0.1" required><br><br>
+
+            <label for="importance">Importance (1-5):</label>
+            <input type="number" id="importance" name="importance" min="1" max="5" required><br><br>
+
+            <label for="urgency">Urgency (1-5):</label>
+            <input type="number" id="urgency" name="urgency" min="1" max="5" required><br><br>
+
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Home</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+       /* Navigation bar */
+       .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar .brand {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .navbar .profile-section {
+        display: flex;
+        align-items: center;
+        position: relative;
+        gap: 10px;
+    }
+
+    .profile-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #fff;
+        background-image: url('https://via.placeholder.com/40'); /* Replace with the actual profile picture URL */
+        background-size: cover;
+        background-position: center;
+        border: 2px solid white;
+        cursor: pointer;
+    }
+
+    .user-name {
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Dropdown styles */
+    .dropdown {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        width: 250px; /* Increased width of the dropdown */
+        background-color: rgb(236, 230, 230);
+        color: black;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        z-index: 10;
+    }
+
+    .dropdown a {
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: black;
+        font-size: 14px;
+    }
+
+    .dropdown a:hover {
+        background-color: #d3d3d3;
+    }
+
+    /* Show dropdown on hover */
+    .profile-section:hover .dropdown {
+        display: block;
+    }
+
+
+        /* Main Content */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 80vh;
+            background-color: #e9f4ff;
+            padding: 2rem;
+        }
+
+        .hero-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #007BFF;
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+          /* Dropdown styles */
+          .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 250px; /* Increased width of the dropdown */
+            background-color: rgb(236, 230, 230);
+            color: black;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+        }
+
+        .dropdown a:hover {
+            background-color: #d3d3d3;
+        }
+
+        /* Show dropdown on hover */
+        .profile-section:hover .dropdown {
+            display: block;
+        }
+
+    </style>
+</head>
+   
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="brand">Intelligent Time Manager</div>
+        <div class="profile-section">
+            <div class="profile-logo"></div>
+            <div class="user-name">{{ user.username }}</div>
+            <div class="dropdown">
+                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url 'add_task' %}">Add Task</a>
+                <a href="{% url 'schedule' %}"">Schedule</a>
+                <a href="{% url 'task_prioritization' %}"">Energy Level</a>
+                <a href="{% url 'task_analytics' %}">Analytics</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h2>Welcome to Intelligent Time Manager</h2>
+        <p>Manage your tasks effectively and stay productive.</p>
+    </div>
+</body>
+</html>
+
+
